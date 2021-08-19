@@ -2,8 +2,8 @@ import { Funnel } from 'charts/Funnel';
 import { Area } from 'charts/Area';
 export { Funnel, Area };
 
-/*export const chartTypes = ['Funnel', 'Area'];
-
+export const chartTypes = ['Funnel', 'Area'];
+/*
 const components = {
   Funnel: Funnel,
   Area: Area,
