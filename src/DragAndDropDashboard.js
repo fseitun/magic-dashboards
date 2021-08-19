@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import '../node_modules/react-grid-layout/css/styles.css';
 import '../node_modules/react-resizable/css/styles.css';
 
-import { Funnel, Area, chartTypes } from 'charts/Charts';
+import { chartTypes, ChartTypeToComponent } from 'charts/Charts';
 // import { Chart, chartTypes } from 'charts/Charts';
 
 function ComboBox({ chartType, setchartType, chartTypes }) {
@@ -61,7 +61,8 @@ export function DragAndDropDashboard(props = defaultProps) {
     };
     return (
       <div key={el.i} data-grid={el}>
-        <span className='text'>{el.type === 'Funnel' ? <Funnel /> : <Area />}</span>
+        {/* <span className='text'>{el.type === 'Funnel' ? <Funnel /> : <Area />}</span> */}
+        <span className='text'>{ChartTypeToComponent(el.type)}</span>
         <span className='remove' style={removeStyle} onClick={() => onRemoveItem(el.i)}>
           x
         </span>
