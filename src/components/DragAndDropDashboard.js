@@ -12,12 +12,11 @@ export function DragAndDropDashboard({
   cols = { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
   rowHeight = 1,
   chartType,
-  setSelectedCharts,
-  selectedCharts,
+  setCurrentDashboard,
+  currentDashboard,
   ...rest
 }) {
   function createElement(el) {
-    console.log(chartType);
     const removeStyle = {
       position: 'absolute',
       right: '2px',
@@ -25,8 +24,8 @@ export function DragAndDropDashboard({
       cursor: 'pointer',
     };
     return (
-      <div key={el.i} selectedCharts-grid={el}>
-        <span className='text'>{ChartTypeToComponent(el.type)}</span>
+      <div key={el.i} data-grid={el}>
+        <span className='chart'>{ChartTypeToComponent(el.type)}</span>
         <span className='remove' style={removeStyle} onClick={() => onRemoveItem(el.i)}>
           x
         </span>
@@ -35,25 +34,40 @@ export function DragAndDropDashboard({
   }
 
   function onBreakpointChange(breakpoint, cols) {
-    setSelectedCharts({ ...selectedCharts, breakpoint: breakpoint, cols: cols });
+    setCurrentDashboard({
+      ...currentDashboard,
+      breakpoint: breakpoint,
+      cols: cols,
+      onLayoutChange: function () {},
+    });
   }
 
   function onLayoutChange(layout) {
-    setSelectedCharts({ ...selectedCharts, layout: layout });
+    console.log(layout);
+    setCurrentDashboard({ ...currentDashboard });
+    saveToLS(currentDashboard);
+    console.log(currentDashboard.layout);
   }
 
   function onRemoveItem(i) {
-    setSelectedCharts({ ...selectedCharts, items: selectedCharts.items.filter(el => el.i !== i) });
+    setCurrentDashboard({
+      ...currentDashboard,
+      items: currentDashboard.items.filter(el => el.i !== i),
+    });
   }
-
   return (
     <>
       <ResponsiveReactGridLayout
+        layout={currentDashboard.layout} //????
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}>
-        {selectedCharts.items.map(el => createElement(el))}
+        {currentDashboard.items.map(el => createElement(el))}
       </ResponsiveReactGridLayout>
     </>
   );
 }
 /*antes recibía, hace falta? ResponsiveReactGridLayout {...props}>  */
+
+function saveToLS(value) {
+  localStorage.setItem('items', JSON.stringify(value));
+}

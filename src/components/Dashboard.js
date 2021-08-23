@@ -4,34 +4,40 @@ import { DragAndDropDashboard } from 'components/DragAndDropDashboard';
 import { chartTypes } from 'components/charts/Charts';
 
 export function Dashboard() {
+  const savedItems = JSON.parse(localStorage.getItem('items'));
+  let result;
+  if (savedItems === null) {
+    result = {
+      items: [].map(i => ({
+        i: i.toString(),
+        x: i,
+        y: 0,
+        w: 1,
+        h: 1,
+        type: '',
+      })),
+      newCounter: 0,
+    };
+  } else {
+    result = savedItems;
+  }
   const [chartType, setchartType] = useState(chartTypes[1]);
-  const [selectedCharts, setSelectedCharts] = useState({
-    items: [].map((i, key) => ({
-      i: i.toString(),
-      x: i,
-      y: 0,
-      w: 1,
-      h: 1,
-      type: '',
-    })),
-    newCounter: 0,
-  });
+  const [currentDashboard, setCurrentDashboard] = useState({ ...result });
 
   function onAddItem() {
-    console.log(chartType);
-    setSelectedCharts({
+    setCurrentDashboard({
       items: [
-        ...selectedCharts.items,
+        ...currentDashboard.items,
         {
-          i: selectedCharts.newCounter.toString(),
-          x: selectedCharts.items.length % (selectedCharts.cols || 12),
-          y: Infinity,
+          i: currentDashboard.newCounter.toString(),
+          x: currentDashboard.items.length % (currentDashboard.cols || 12),
+          y: 100000, //Infinity
           w: 1,
           h: 1,
           type: chartType,
         },
       ],
-      newCounter: selectedCharts.newCounter + 1,
+      newCounter: currentDashboard.newCounter + 1,
     });
   }
 
@@ -45,8 +51,8 @@ export function Dashboard() {
       />
       <DragAndDropDashboard
         chartType={chartType}
-        selectedCharts={selectedCharts}
-        setSelectedCharts={setSelectedCharts}
+        currentDashboard={currentDashboard}
+        setCurrentDashboard={setCurrentDashboard}
       />
     </>
   );
