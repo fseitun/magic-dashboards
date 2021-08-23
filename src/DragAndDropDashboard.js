@@ -5,8 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import '../node_modules/react-grid-layout/css/styles.css';
 import '../node_modules/react-resizable/css/styles.css';
 
-// import { Funnel, Area } from 'charts/Charts';
-import { Chart, chartTypes } from 'charts/Charts';
+import { chartTypes, ChartTypeToComponent } from 'charts/Charts';
 
 function ComboBox({ chartType, setchartType, chartTypes }) {
   return (
@@ -18,7 +17,6 @@ function ComboBox({ chartType, setchartType, chartTypes }) {
       options={chartTypes}
       sx={{ width: 300 }}
       renderInput={params => {
-        // console.log(params);
         return <TextField {...params} label='Tipo de Gráfico' />;
       }}
     />
@@ -34,7 +32,6 @@ const defaultProps = {
 };
 
 export function DragAndDropDashboard(props = defaultProps) {
-  // console.log(props);
   const [chartType, setchartType] = useState(chartTypes[1]);
   console.log(chartType);
   const [data, setData] = useState({
@@ -48,9 +45,9 @@ export function DragAndDropDashboard(props = defaultProps) {
     })),
     newCounter: 0,
   });
-  // console.log(data);
 
   function createElement(el) {
+    console.log(chartType);
     const removeStyle = {
       position: 'absolute',
       right: '2px',
@@ -59,9 +56,7 @@ export function DragAndDropDashboard(props = defaultProps) {
     };
     return (
       <div key={el.i} data-grid={el}>
-        <span className='text'>
-          <Chart chartType={chartType} />
-        </span>
+        <span className='text'>{ChartTypeToComponent(el.type)}</span>
         <span className='remove' style={removeStyle} onClick={() => onRemoveItem(el.i)}>
           x
         </span>
