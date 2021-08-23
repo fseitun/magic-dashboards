@@ -1,5 +1,5 @@
-import { Funnel } from 'charts/Funnel';
-import { Area } from 'charts/Area';
+import { Funnel } from 'components/charts/Funnel';
+import { Area } from 'components/charts/Area';
 
 export const chartTypes = ['Funnel', 'Area'];
 
