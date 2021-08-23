@@ -4,39 +4,39 @@ import { DragAndDropDashboard } from 'components/DragAndDropDashboard';
 import { chartTypes } from 'components/charts/Charts';
 
 export function Dashboard() {
-  const savedItems = JSON.parse(localStorage.getItem('items'));
+  const savedLayouts = JSON.parse(localStorage.getItem('layouts'));
   let result;
-  if (savedItems === null) {
+  if (savedLayouts === null) {
     result = {
-      items: [].map(i => ({
+      layouts: [].map(i => ({
         i: i.toString(),
         x: i,
         y: 0,
         w: 1,
         h: 1,
-        type: '',
       })),
+      type: [],
       newCounter: 0,
     };
   } else {
-    result = savedItems;
+    result = savedLayouts;
   }
   const [chartType, setchartType] = useState(chartTypes[1]);
   const [currentDashboard, setCurrentDashboard] = useState({ ...result });
 
   function onAddItem() {
     setCurrentDashboard({
-      items: [
-        ...currentDashboard.items,
+      layouts: [
+        ...currentDashboard.layouts,
         {
           i: currentDashboard.newCounter.toString(),
-          x: currentDashboard.items.length % (currentDashboard.cols || 12),
+          x: currentDashboard.layouts.length % (currentDashboard.cols || 12),
           y: 100000, //Infinity
           w: 1,
           h: 1,
-          type: chartType,
         },
       ],
+      type: [...currentDashboard.type, chartType],
       newCounter: currentDashboard.newCounter + 1,
     });
   }

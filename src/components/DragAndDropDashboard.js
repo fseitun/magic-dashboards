@@ -1,11 +1,11 @@
-import React from 'react';
-import { WidthProvider, Responsive } from 'react-grid-layout';
+import React, { useEffect } from 'react';
+import RGL, { WidthProvider } from 'react-grid-layout';
 
 import { ChartTypeToComponent } from './charts/Charts';
 import '../../node_modules/react-grid-layout/css/styles.css';
 import '../../node_modules/react-resizable/css/styles.css';
 
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
+const ResponsiveReactGridLayout = WidthProvider(RGL);
 
 export function DragAndDropDashboard({
   className = 'layout',
@@ -23,9 +23,11 @@ export function DragAndDropDashboard({
       top: 0,
       cursor: 'pointer',
     };
+    console.log(el.i);
+    console.log(currentDashboard.type[el.i]);
     return (
       <div key={el.i} data-grid={el}>
-        <span className='chart'>{ChartTypeToComponent(el.type)}</span>
+        <span className='chart'>{ChartTypeToComponent(currentDashboard.type[el.i])}</span>
         <span className='remove' style={removeStyle} onClick={() => onRemoveItem(el.i)}>
           x
         </span>
@@ -44,24 +46,30 @@ export function DragAndDropDashboard({
 
   function onLayoutChange(layout) {
     console.log(layout);
-    setCurrentDashboard({ ...currentDashboard });
-    saveToLS(currentDashboard);
-    console.log(currentDashboard.layout);
+    setCurrentDashboard({
+      layouts: layout,
+      newCounter: currentDashboard.newCounter,
+      type: currentDashboard.type,
+    });
+    console.log(currentDashboard);
   }
+
+  useEffect(() => saveToLS(currentDashboard), [currentDashboard]);
 
   function onRemoveItem(i) {
     setCurrentDashboard({
       ...currentDashboard,
-      items: currentDashboard.items.filter(el => el.i !== i),
+      layouts: currentDashboard.layouts.filter(el => el.i !== i),
     });
   }
+
   return (
     <>
       <ResponsiveReactGridLayout
         layout={currentDashboard.layout} //????
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}>
-        {currentDashboard.items.map(el => createElement(el))}
+        {currentDashboard.layouts.map(el => createElement(el))}
       </ResponsiveReactGridLayout>
     </>
   );
@@ -69,5 +77,5 @@ export function DragAndDropDashboard({
 /*antes recibía, hace falta? ResponsiveReactGridLayout {...props}>  */
 
 function saveToLS(value) {
-  localStorage.setItem('items', JSON.stringify(value));
+  localStorage.setItem('layouts', JSON.stringify(value));
 }
