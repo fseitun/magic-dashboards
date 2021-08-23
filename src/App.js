@@ -1,7 +1,8 @@
-import { DragAndDropDashboard } from 'DragAndDropDashboard';
+
+import { Dashboard } from 'components/Dashboard';
 
 function App() {
-  return <DragAndDropDashboard />;
+  return <Dashboard />;
 }
 
 export default App;
