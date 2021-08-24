@@ -41,7 +41,6 @@ export function DragAndDropDashboard({
       ...currentDashboard,
       breakpoint: breakpoint,
       cols: cols,
-      onLayoutChange: function () {},
     });
   }
 
@@ -74,7 +73,6 @@ export function DragAndDropDashboard({
     </>
   );
 }
-/*antes recibía, hace falta? ResponsiveReactGridLayout {...props}>  */
 
 function saveToLS(value) {
   localStorage.setItem('layouts', JSON.stringify(value));

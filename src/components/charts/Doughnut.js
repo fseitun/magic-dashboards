@@ -1,20 +1,29 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 
-export function Doughnut() {
+let data = [
+  { value: 1048, name: 'Acc. con daños' },
+  { value: 735, name: 'Acc in itinere' },
+  { value: 580, name: 'enfermedad ocupacional' },
+  { value: 484, name: 'Eventos ambientales' },
+  { value: 300, name: 'Incidente relacionado con personas' },
+];
+
+export function AccidentesEIncidentes() {
   const option = {
     tooltip: {
       trigger: 'item',
     },
     legend: {
-      top: '5%',
-      left: 'center',
+      right: '0',
+      top: '25%',
+      width: 50,
     },
     series: [
       {
-        name: '访问来源',
+        name: 'Accidentes e Incidentes',
         type: 'pie',
-        radius: ['40%', '70%'],
+        radius: ['', '70%'],
         avoidLabelOverlap: false,
         label: {
           show: false,
@@ -23,20 +32,14 @@ export function Doughnut() {
         emphasis: {
           label: {
             show: true,
-            fontSize: '40',
+            fontSize: '18',
             fontWeight: 'bold',
           },
         },
         labelLine: {
           show: false,
         },
-        data: [
-          { value: 1048, name: '搜索引擎' },
-          { value: 735, name: '直接访问' },
-          { value: 580, name: '邮件营销' },
-          { value: 484, name: '联盟广告' },
-          { value: 300, name: '视频广告' },
-        ],
+        data,
       },
     ],
   };
