@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Switch } from '@material-ui/core';
+
 import { Selector } from 'components/Selector';
 import { DragAndDropDashboard } from 'components/DragAndDropDashboard';
 import { chartTypes } from 'components/charts/Charts';
@@ -40,16 +42,22 @@ export function Dashboard() {
       newCounter: currentDashboard.newCounter + 1,
     });
   }
-
+  const [isAdmin, setIsAdmin] = useState();
   return (
     <>
-      <Selector
-        chartTypes={chartTypes}
-        chartType={chartType}
-        setchartType={setchartType}
-        onAddItem={onAddItem}
-      />
+      <Switch onChange={() => setIsAdmin(!isAdmin)} />
+      {isAdmin ? (
+        <Selector
+          chartTypes={chartTypes}
+          chartType={chartType}
+          setchartType={setchartType}
+          onAddItem={onAddItem}
+        />
+      ) : null}
       <DragAndDropDashboard
+        isDraggable={isAdmin}
+        isResizable={isAdmin}
+        isAdmin={isAdmin}
         chartType={chartType}
         currentDashboard={currentDashboard}
         setCurrentDashboard={setCurrentDashboard}
