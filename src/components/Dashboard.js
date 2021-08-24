@@ -4,6 +4,7 @@ import { Switch } from '@material-ui/core';
 import { Selector } from 'components/Selector';
 import { DragAndDropDashboard } from 'components/DragAndDropDashboard';
 import { chartTypes } from 'components/widgets/Widget';
+import { AccidentesEincidentes } from 'components/widgets/Card';
 
 export function Dashboard() {
   const savedLayouts = JSON.parse(localStorage.getItem('layouts'));
