@@ -11,32 +11,25 @@ let data = [
 
 export function TiposDeAccidentesOcurridos() {
   const option = {
-    title: { text: 'Tipos de Accidentes Ocurridos', bottom: '5%' }, //pasar dinámicamente?
-    tooltip: {
-      trigger: 'item',
-    },
+    title: { text: 'Tipos de Accidentes Ocurridos', bottom: '5%', left: 'center' }, //pasar dinámicamente?
+    tooltip: { trigger: 'item' },
     legend: {
       right: '0',
       top: '25%',
       width: 50,
-      icon: 'circle'
+      icon: 'circle',
     },
     series: [
       {
-        name: 'Tipos de Accidentes Ocurridos',
         type: 'pie',
-        left: '2%',
-        radius: ['', '70%'],
-        avoidLabelOverlap: false,
-        label: {
-          show: false,
-          position: 'center',
-        },
-
+        radius: ['', '75%'],
+        label: { show: false },
+        left: 0,
+        center: ['30%', '45%'],
         data,
       },
     ],
   };
 
-  return <ReactECharts option={option} style={{ height: '100%' }} />;
+  return <ReactECharts option={option}  />;
 }
