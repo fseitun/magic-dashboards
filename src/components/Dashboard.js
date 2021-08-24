@@ -42,7 +42,7 @@ export function Dashboard() {
       newCounter: currentDashboard.newCounter + 1,
     });
   }
-  const [isAdmin, setIsAdmin] = useState();
+  const [isAdmin, setIsAdmin] = useState(false);
   return (
     <>
       <Switch onChange={() => setIsAdmin(!isAdmin)} />
