@@ -3,7 +3,7 @@ import { Switch } from '@material-ui/core';
 
 import { Selector } from 'components/Selector';
 import { DragAndDropDashboard } from 'components/DragAndDropDashboard';
-import { chartTypes } from 'components/charts/Charts';
+import { chartTypes } from 'components/widgets/Widget';
 
 export function Dashboard() {
   const savedLayouts = JSON.parse(localStorage.getItem('layouts'));

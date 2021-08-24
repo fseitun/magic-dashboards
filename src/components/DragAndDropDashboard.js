@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import RGL, { WidthProvider } from 'react-grid-layout';
 
-import { ChartTypeToComponent } from './charts/Charts';
+import { Widget } from 'components/widgets/Widget';
 import '../../node_modules/react-grid-layout/css/styles.css';
 import '../../node_modules/react-resizable/css/styles.css';
 
@@ -26,7 +26,7 @@ export function DragAndDropDashboard({
     };
     return (
       <div key={el.i} data-grid={el}>
-        <span className='chart'>{ChartTypeToComponent(currentDashboard.type[el.i])}</span>
+        <span className='chart'>{Widget(currentDashboard.type[el.i])}</span>
         {isAdmin ? (
           <span className='remove' style={removeStyle} onClick={() => onRemoveItem(el.i)}>
             x
