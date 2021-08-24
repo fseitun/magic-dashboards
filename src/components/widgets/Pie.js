@@ -9,8 +9,9 @@ let data = [
   { value: 300, name: 'Incidente relacionado con personas' },
 ];
 
-export function AccidentesEIncidentes() {
+export function TiposDeAccidentesOcurridos() {
   const option = {
+    title: { text: 'Tipos de Accidentes Ocurridos', bottom: '5%' }, //pasar dinámicamente?
     tooltip: {
       trigger: 'item',
     },
@@ -18,31 +19,24 @@ export function AccidentesEIncidentes() {
       right: '0',
       top: '25%',
       width: 50,
+      icon: 'circle'
     },
     series: [
       {
-        name: 'Accidentes e Incidentes',
+        name: 'Tipos de Accidentes Ocurridos',
         type: 'pie',
+        left: '2%',
         radius: ['', '70%'],
         avoidLabelOverlap: false,
         label: {
           show: false,
           position: 'center',
         },
-        emphasis: {
-          label: {
-            show: true,
-            fontSize: '18',
-            fontWeight: 'bold',
-          },
-        },
-        labelLine: {
-          show: false,
-        },
+
         data,
       },
     ],
   };
 
-  return <ReactECharts option={option} style={{ height: 300 }} />;
+  return <ReactECharts option={option} style={{ height: '100%' }} />;
 }
