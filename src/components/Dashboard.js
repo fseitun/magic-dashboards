@@ -3,15 +3,14 @@ import { Switch } from '@material-ui/core';
 
 import { Selector } from 'components/Selector';
 import { DragAndDropDashboard } from 'components/DragAndDropDashboard';
-import { chartTypes } from 'components/widgets/Widget';
-import { AccidentesEincidentes } from 'components/widgets/Card';
+import { widgetTypes } from 'components/widgets/TypeToComponent';
 
 export function Dashboard() {
-  const savedLayouts = JSON.parse(localStorage.getItem('layouts'));
+  const savedLayout = JSON.parse(localStorage.getItem('layout'));
   let result;
-  if (savedLayouts === null) {
+  if (savedLayout === null) {
     result = {
-      layouts: [].map(i => ({
+      layout: [].map(i => ({
         i: i.toString(),
         x: i,
         y: 0,
@@ -22,21 +21,21 @@ export function Dashboard() {
       newCounter: 0,
     };
   } else {
-    result = savedLayouts;
+    result = savedLayout;
   }
-  const [chartType, setchartType] = useState(chartTypes[1]);
+  const [chartType, setchartType] = useState(widgetTypes[1]);
   const [currentDashboard, setCurrentDashboard] = useState({ ...result });
 
   function onAddItem() {
     setCurrentDashboard({
-      layouts: [
-        ...currentDashboard.layouts,
+      layout: [
+        ...currentDashboard.layout,
         {
           i: currentDashboard.newCounter.toString(),
-          x: currentDashboard.layouts.length % (currentDashboard.cols || 12),
+          x: currentDashboard.layout.length % (currentDashboard.cols || 16),
           y: 100000, //Infinity
-          w: 1,
-          h: 1,
+          w: 3,
+          h: 3,
         },
       ],
       type: [...currentDashboard.type, chartType],
@@ -49,17 +48,20 @@ export function Dashboard() {
       <Switch onChange={() => setIsAdmin(!isAdmin)} />
       {isAdmin ? (
         <Selector
-          chartTypes={chartTypes}
+          widgetTypes={widgetTypes}
           chartType={chartType}
           setchartType={setchartType}
           onAddItem={onAddItem}
         />
       ) : null}
       <DragAndDropDashboard
+        className='layout'
+        cols={16}
+        rowHeight={50}
+        width={1200}
         isDraggable={isAdmin}
         isResizable={isAdmin}
         isAdmin={isAdmin}
-        chartType={chartType}
         currentDashboard={currentDashboard}
         setCurrentDashboard={setCurrentDashboard}
       />

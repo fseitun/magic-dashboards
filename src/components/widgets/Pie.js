@@ -31,5 +31,5 @@ export function TiposDeAccidentesOcurridos() {
     ],
   };
 
-  return <ReactECharts option={option}  />;
+  return <ReactECharts option={option} style={{ height: '100%' }} />;
 }

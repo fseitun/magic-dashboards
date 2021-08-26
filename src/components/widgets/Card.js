@@ -1,41 +1,97 @@
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import { Card, Box, Typography, CardContent } from '@material-ui/core';
 
 export function AccidentesEincidentes() {
   const data = { reportesTotales: 200, reportesPendientes: 68, accionesPendientes: 38 };
   return (
     <>
-      <Card sx={{ display: 'inline-block', maxWidth: 300, justifyContent: 'center', m: 1 }}>
-        <CardContent justifyContent='center'>
-          <Typography variant='h5' component='div'>
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Typography variant='h6' component='div' justifyItems='center'>
+          Accidentes e Incidentes
+        </Typography>
+      </Box>
+      <Card sx={{ display: 'inline-block', m: 1 }}>
+        <CardContent>
+          <Typography variant='h6' component='div'>
             {data.reportesTotales}
           </Typography>
-          <Typography sx={{ mb: 1.5 }} color='text.secondary'>
-            Reportes totales
-          </Typography>
+          <Typography color='text.secondary'>Reportes totales</Typography>
         </CardContent>
       </Card>
-      <Card sx={{ display: 'inline-block', maxWidth: 300, justifyContent: 'center', m: 1 }}>
-        <CardContent justifyContent='center'>
-          <Typography variant='h5' component='div'>
+      <Card sx={{ display: 'inline-block', m: 1 }}>
+        <CardContent>
+          <Typography variant='h6' component='div'>
             {data.reportesPendientes}
           </Typography>
-          <Typography sx={{ mb: 1.5 }} color='text.secondary'>
-            Reportes pendientes
-          </Typography>
+          <Typography color='text.secondary'>Reportes pendientes</Typography>
         </CardContent>
       </Card>
-      <Card sx={{ display: 'inline-block', maxWidth: 300, justifyContent: 'center', m: 1 }}>
-        <CardContent justifyContent='center'>
-          <Typography variant='h5' component='div'>
+      <Card sx={{ display: 'inline-block', m: 1 }}>
+        <CardContent>
+          <Typography variant='h6' component='div'>
             {data.accionesPendientes}
           </Typography>
-          <Typography sx={{ mb: 1.5 }} color='text.secondary'>
-            Acciones pendientes
-          </Typography>
+          <Typography color='text.secondary'>Acciones pendientes</Typography>
         </CardContent>
       </Card>
     </>
+  );
+}
+
+export function TiposDeRiesgoOcurridos() {
+  const data = { sinLesiones: 30, menor: 6, importante: 3, severo: 10, fatal: 8, catastrofico: 29 };
+  return (
+    <Box sx={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
+      <Card sx={{ m: 1 }}>
+        <CardContent>
+          <Typography variant='h6' component='div'>
+            {data.sinLesiones}
+          </Typography>
+          <Typography color='text.secondary'>Sin Lesiones</Typography>
+        </CardContent>
+      </Card>
+      <Card sx={{ m: 1 }}>
+        <CardContent>
+          <Typography variant='h6' component='div'>
+            {data.menor}
+          </Typography>
+          <Typography color='text.secondary'>Menor</Typography>
+        </CardContent>
+      </Card>
+      <Card sx={{ m: 1 }}>
+        <CardContent>
+          <Typography variant='h6' component='div'>
+            {data.importante}
+          </Typography>
+          <Typography color='text.secondary'>Importante</Typography>
+        </CardContent>
+      </Card>
+      <Card sx={{ m: 1 }}>
+        <CardContent>
+          <Typography variant='h6' component='div'>
+            {data.severo}
+          </Typography>
+          <Typography color='text.secondary'>Severo</Typography>
+        </CardContent>
+      </Card>
+      <Card sx={{ flexBasis: 60, m: 1 }}>
+        <CardContent>
+          <Typography variant='h6' component='div'>
+            {data.fatal}
+          </Typography>
+          <Typography color='text.secondary'>Fatal</Typography>
+        </CardContent>
+      </Card>
+      <Card sx={{ m: 1 }}>
+        <CardContent>
+          <Typography variant='h6' component='div'>
+            {data.catastrofico}
+          </Typography>
+          <Typography color='text.secondary'>Catastrófico</Typography>
+        </CardContent>
+      </Card>
+      <Typography variant='h6' component='div' justifyItems='center'>
+          Tipo de Riesgo Ocurrido
+        </Typography>
+    </Box>
   );
 }
