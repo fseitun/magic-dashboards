@@ -61,5 +61,5 @@ export function Funnel() {
     ],
   };
 
-  return <ReactECharts option={option} style={{ height: 300 }} />;
+  return <ReactECharts option={option} style={{ height: '100%' }} />;
 }

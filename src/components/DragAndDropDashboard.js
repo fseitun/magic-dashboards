@@ -1,22 +1,11 @@
 import { useEffect } from 'react';
-import RGL, { WidthProvider } from 'react-grid-layout';
+import GridLayout from 'react-grid-layout';
 
-import { Widget } from 'components/widgets/Widget';
+import { TypeToComponent } from 'components/widgets/TypeToComponent';
 import '../../node_modules/react-grid-layout/css/styles.css';
 import '../../node_modules/react-resizable/css/styles.css';
 
-const ResponsiveReactGridLayout = WidthProvider(RGL);
-
-export function DragAndDropDashboard({
-  isAdmin,
-  className = 'layout',
-  cols = { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-  rowHeight = 1,
-  chartType,
-  setCurrentDashboard,
-  currentDashboard,
-  ...rest
-}) {
+export function DragAndDropDashboard({ isAdmin, setCurrentDashboard, currentDashboard, ...rest }) {
   function createElement(el) {
     const removeStyle = {
       position: 'absolute',
@@ -26,7 +15,9 @@ export function DragAndDropDashboard({
     };
     return (
       <div key={el.i} data-grid={el}>
-        <span className='chart'>{Widget(currentDashboard.type[el.i])}</span>
+        <span className='chart'>
+          <TypeToComponent widgetType={currentDashboard.type[el.i]} />
+        </span>
         {isAdmin ? (
           <span className='remove' style={removeStyle} onClick={() => onRemoveItem(el.i)}>
             x
@@ -36,17 +27,9 @@ export function DragAndDropDashboard({
     );
   }
 
-  function onBreakpointChange(breakpoint, cols) {
-    setCurrentDashboard({
-      ...currentDashboard,
-      breakpoint: breakpoint,
-      cols: cols,
-    });
-  }
-
   function onLayoutChange(layout) {
     setCurrentDashboard({
-      layouts: layout,
+      layout: layout,
       newCounter: currentDashboard.newCounter,
       type: currentDashboard.type,
     });
@@ -57,23 +40,19 @@ export function DragAndDropDashboard({
   function onRemoveItem(i) {
     setCurrentDashboard({
       ...currentDashboard,
-      layouts: currentDashboard.layouts.filter(el => el.i !== i),
+      layout: currentDashboard.layout.filter(el => el.i !== i),
     });
   }
-
+  console.log(currentDashboard);
   return (
     <>
-      <ResponsiveReactGridLayout
-        layout={currentDashboard.layout} //????
-        onLayoutChange={onLayoutChange}
-        onBreakpointChange={onBreakpointChange}
-        {...rest}>
-        {currentDashboard.layouts.map(el => createElement(el))}
-      </ResponsiveReactGridLayout>
+      <GridLayout layout={currentDashboard.layout} onLayoutChange={onLayoutChange} {...rest}>
+        {currentDashboard.layout.map(el => createElement(el))}
+      </GridLayout>
     </>
   );
 }
 
 function saveToLS(value) {
-  localStorage.setItem('layouts', JSON.stringify(value));
+  localStorage.setItem('layout', JSON.stringify(value));
 }
