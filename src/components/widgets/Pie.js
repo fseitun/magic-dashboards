@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
-
-let data = [
-  { value: 1048, name: 'Acc. con daños' },
-  { value: 735, name: 'Acc in itinere' },
-  { value: 580, name: 'enfermedad ocupacional' },
-  { value: 484, name: 'Eventos ambientales' },
-  { value: 300, name: 'Incidente relacionado con personas' },
-];
+import { useQuery, useQueryClient } from 'react-query';
+import { getMethod } from 'api';
 
 export function TiposDeAccidentesOcurridos() {
+  const queryClient = useQueryClient()
+
+  const { data } = useQuery('accType', ({ queryKey }) =>
+    getMethod('/ai/getsum', { serie: `${queryKey[0]}`, nomserie: 'name', nomsumarizado: 'value' })
+  );
+
   const option = {
     title: { text: 'Tipos de Accidentes Ocurridos', bottom: '5%', left: 'center' }, //pasar dinámicamente?
     tooltip: { trigger: 'item' },

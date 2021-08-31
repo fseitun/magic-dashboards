@@ -43,7 +43,6 @@ export function DragAndDropDashboard({ isAdmin, setCurrentDashboard, currentDash
       layout: currentDashboard.layout.filter(el => el.i !== i),
     });
   }
-  console.log(currentDashboard);
   return (
     <>
       <GridLayout layout={currentDashboard.layout} onLayoutChange={onLayoutChange} {...rest}>
