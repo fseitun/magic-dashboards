@@ -1,11 +1,16 @@
 import { Card, Box, Typography, CardContent } from '@material-ui/core';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { getMethod } from 'api';
+
 
 const filterByParam = (arr, param) => arr.filter(obj => obj.valor === param);
 const counter = arr => arr.reduce((ac, cur) => (ac += cur.count), 0);
+
 export function AccidentesEincidentes() {
-  const { data } = useQuery('phase', ({ queryKey }) => getMethod('/ai/getsum', queryKey[0]));
+  const queryClient = useQueryClient();
+  const { data } = useQuery('phase', ({ queryKey }) =>
+    getMethod('/ai/getsum', { serie: `${queryKey[0]}` })
+  );
 
   return (
     <>
@@ -43,7 +48,10 @@ export function AccidentesEincidentes() {
 }
 
 export function TiposDeRiesgoOcurridos() {
-  const { data } = useQuery('injType', ({ queryKey }) => getMethod('/ai/getsum', queryKey[0]));
+  const queryClient = useQueryClient();
+  const { data } = useQuery('injType', ({ queryKey }) =>
+    getMethod('/ai/getsum', { serie: `${queryKey[0]}` })
+  );
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
