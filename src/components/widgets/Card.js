@@ -5,11 +5,19 @@ import { getMethod } from 'api';
 const filterByParam = (arr, param) => arr.filter(obj => obj.valor === param);
 const counter = arr => arr.reduce((ac, cur) => (ac += cur.count), 0);
 
-export function AccidentesEincidentes() {
-  const { data } = useQuery('phase', ({ queryKey }) =>
-    getMethod('/ai/getsum', { serie: `${queryKey[0]}` })
-  );
+let queryObject = {};
 
+export function AccidentesEincidentes({ filter }) {
+  let innerQueryObject = { ...queryObject, ...filter, serie: 'phase' };
+  const { data } = useQuery(
+    [
+      innerQueryObject.serie,
+      innerQueryObject.sitio,
+      innerQueryObject.fromdate,
+      innerQueryObject.todate,
+    ],
+    () => getMethod('/ai/getsum', innerQueryObject)
+  );
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -45,9 +53,16 @@ export function AccidentesEincidentes() {
   );
 }
 
-export function TiposDeRiesgoOcurridos() {
-  const { data } = useQuery('injType', ({ queryKey }) =>
-    getMethod('/ai/getsum', { serie: `${queryKey[0]}` })
+export function TiposDeRiesgoOcurridos({ filter }) {
+  let innerQueryObject = { ...queryObject, ...filter, serie: 'injType' };
+  const { data } = useQuery(
+    [
+      innerQueryObject.serie,
+      innerQueryObject.sitio,
+      innerQueryObject.fromdate,
+      innerQueryObject.todate,
+    ],
+    () => getMethod('/ai/getsum', innerQueryObject)
   );
 
   return (

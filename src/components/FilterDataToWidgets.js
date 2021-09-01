@@ -1,8 +1,10 @@
-import { Autocomplete, Box, TextField } from '@material-ui/core';
+import { useState } from 'react';
+import { Autocomplete, Box, TextField, Button } from '@material-ui/core';
 import DatePicker from 'react-datepicker';
 import { registerLocale } from 'react-datepicker';
 import es from 'date-fns/locale/es';
 import 'react-datepicker/dist/react-datepicker.css';
+import { dateObjectToYearMonthDate } from 'utils';
 
 registerLocale('es', es);
 
@@ -14,14 +16,22 @@ const optionsSubloc3 = ['(G3.G4 Carga Descarga) Dock N°1', 'Diesel'];
 const optionsSubloc4 = [];
 
 export function FilterDataToWidgets({ filter, setFilter }) {
-  const onChange = ([start, end]) =>
-    setFilter(prevState => ({ ...prevState, startDate: start, endDate: end }));
+  const [auxiliaryFilter, setAuxiliaryFilter] = useState({});
 
+  const datePickerOnChange = ([start, end]) => {
+    setAuxiliaryFilter(prevState => ({
+      ...prevState,
+      startDate: start,
+      endDate: end,
+      fromdate: dateObjectToYearMonthDate(start),
+      todate: dateObjectToYearMonthDate(end),
+    }));
+  };
   return (
     <Box sx={{ display: 'flex' }}>
       <Autocomplete
         onChange={(e, newValue) => {
-          setFilter(prevState => ({
+          setAuxiliaryFilter(prevState => ({
             ...prevState,
             sitio: newValue,
           }));
@@ -30,10 +40,10 @@ export function FilterDataToWidgets({ filter, setFilter }) {
         sx={{ width: 120 }}
         renderInput={params => <TextField {...params} label='Sitio' />}
       />
-      {filter.sitio && (
+      {auxiliaryFilter.sitio && (
         <Autocomplete
           onChange={(e, newValue) => {
-            setFilter(prevState => ({
+            setAuxiliaryFilter(prevState => ({
               ...prevState,
               subloc1: newValue,
             }));
@@ -43,10 +53,10 @@ export function FilterDataToWidgets({ filter, setFilter }) {
           renderInput={params => <TextField {...params} label='Sublocación 1' />}
         />
       )}
-      {filter.subloc1 && (
+      {auxiliaryFilter.subloc1 && (
         <Autocomplete
           onChange={(e, newValue) => {
-            setFilter(prevState => ({
+            setAuxiliaryFilter(prevState => ({
               ...prevState,
               subloc2: newValue,
             }));
@@ -56,10 +66,10 @@ export function FilterDataToWidgets({ filter, setFilter }) {
           renderInput={params => <TextField {...params} label='Sublocación 2' />}
         />
       )}
-      {filter.subloc2 && (
+      {auxiliaryFilter.subloc2 && (
         <Autocomplete
           onChange={(e, newValue) => {
-            setFilter(prevState => ({
+            setAuxiliaryFilter(prevState => ({
               ...prevState,
               subloc3: newValue,
             }));
@@ -69,10 +79,10 @@ export function FilterDataToWidgets({ filter, setFilter }) {
           renderInput={params => <TextField {...params} label='Sublocación 3' />}
         />
       )}
-      {filter.subloc3 && (
+      {auxiliaryFilter.subloc3 && (
         <Autocomplete
           onChange={(e, newValue) => {
-            setFilter(prevState => ({
+            setAuxiliaryFilter(prevState => ({
               ...prevState,
               subloc4: newValue,
             }));
@@ -82,17 +92,21 @@ export function FilterDataToWidgets({ filter, setFilter }) {
           renderInput={params => <TextField {...params} label='Sublocación 4' />}
         />
       )}
-      <DatePicker
-        locale='es'
-        dateFormat='dd/MM/yyyy'
-        selected={filter.startDate}
-        onChange={onChange}
-        startDate={filter.startDate}
-        endDate={filter.endDate}
-        selectsRange
-        placeholderText='inicio - fin'
-      />
-      {/* armar botón para hacer el setFilter onClick luego replicar lógica en todos los widgets*/}
+      <Box>
+        <DatePicker
+          locale='es'
+          dateFormat='dd/MM/yyyy'
+          selected={auxiliaryFilter.startDate}
+          onChange={datePickerOnChange}
+          startDate={auxiliaryFilter.startDate}
+          endDate={auxiliaryFilter.endDate}
+          selectsRange
+          placeholderText='inicio - fin'
+        />
+      </Box>
+      <Button onClick={() => setFilter(prevState => ({ ...prevState, ...auxiliaryFilter }))}>
+        Filtrar
+      </Button>
     </Box>
   );
 }
