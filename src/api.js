@@ -9,6 +9,5 @@ export const getMethod = async (url, load) => {
     headers: { 'Content-Type': 'application/json' },
     data: JSON.stringify(load),
   });
-  console.log(data);
   return data;
 };

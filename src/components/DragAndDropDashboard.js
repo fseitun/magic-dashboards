@@ -1,11 +1,16 @@
 import { useEffect } from 'react';
 import GridLayout from 'react-grid-layout';
-
 import { TypeToComponent } from 'components/widgets/TypeToComponent';
 import '../../node_modules/react-grid-layout/css/styles.css';
 import '../../node_modules/react-resizable/css/styles.css';
 
-export function DragAndDropDashboard({ isAdmin, setCurrentDashboard, currentDashboard, ...rest }) {
+export function DragAndDropDashboard({
+  isAdmin,
+  setCurrentDashboard,
+  currentDashboard,
+  filter,
+  ...rest
+}) {
   function createElement(el) {
     const removeStyle = {
       position: 'absolute',
@@ -16,7 +21,7 @@ export function DragAndDropDashboard({ isAdmin, setCurrentDashboard, currentDash
     return (
       <div key={el.i} data-grid={el}>
         <span className='chart'>
-          <TypeToComponent widgetType={currentDashboard.type[el.i]} />
+          <TypeToComponent filter={filter} widgetType={currentDashboard.type[el.i]} />
         </span>
         {isAdmin ? (
           <span className='remove' style={removeStyle} onClick={() => onRemoveItem(el.i)}>

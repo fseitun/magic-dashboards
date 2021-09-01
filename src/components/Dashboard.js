@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Switch } from '@material-ui/core';
 
-import { Selector } from 'components/Selector';
+import { WidgetSelector } from 'components/WidgetSelector';
 import { DragAndDropDashboard } from 'components/DragAndDropDashboard';
 import { widgetTypes } from 'components/widgets/TypeToComponent';
+import { FilterDataToWidgets } from 'components/FilterDataToWidgets';
 
 export function Dashboard() {
   const savedLayout = JSON.parse(localStorage.getItem('layout'));
@@ -43,17 +44,19 @@ export function Dashboard() {
     });
   }
   const [isAdmin, setIsAdmin] = useState(false);
+  const [filter, setFilter] = useState({});
   return (
     <>
       <Switch onChange={() => setIsAdmin(!isAdmin)} />
-      {isAdmin ? (
-        <Selector
+      {isAdmin && (
+        <WidgetSelector
           widgetTypes={widgetTypes}
           chartType={chartType}
           setchartType={setchartType}
           onAddItem={onAddItem}
         />
-      ) : null}
+      )}
+      <FilterDataToWidgets filter={filter} setFilter={setFilter} />
       <DragAndDropDashboard
         className='layout'
         cols={16}
@@ -64,6 +67,7 @@ export function Dashboard() {
         isAdmin={isAdmin}
         currentDashboard={currentDashboard}
         setCurrentDashboard={setCurrentDashboard}
+        filter={filter}
       />
     </>
   );
