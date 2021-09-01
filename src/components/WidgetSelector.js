@@ -1,12 +1,11 @@
-import Autocomplete from '@material-ui/core/Autocomplete';
-import TextField from '@material-ui/core/TextField';
+import { Box, Autocomplete, TextField, Button } from '@material-ui/core';
 
 export function WidgetSelector({ widgetTypes, setchartType, chartType, onAddItem }) {
   return (
-    <>
+    <Box sx={{ display: 'flex' }}>
       <WidgetDropdown chartType={chartType} setchartType={setchartType} widgetTypes={widgetTypes} />
-      <button onClick={e => onAddItem(chartType)}>Add Item</button>
-    </>
+      <Button onClick={e => onAddItem(chartType)}>Add Item</Button>
+    </Box>
   );
 }
 

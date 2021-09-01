@@ -4,12 +4,18 @@ import { useQuery } from 'react-query';
 import { Typography, Box } from '@material-ui/core';
 import { getMethod } from 'api';
 
-let queryObject = { serie: 'accType', nomserie: 'name', nomsumarizado: 'value' };
+let queryObject = { nomserie: 'name', nomsumarizado: 'value' };
 
 export function TiposDeAccidentesOcurridos({ filter }) {
-  queryObject = { ...queryObject, ...filter };
-  const { data } = useQuery([queryObject.serie, queryObject.sitio], () =>
-    getMethod('/ai/getsum', queryObject)
+  let innerQueryObject = { ...queryObject, ...filter, serie: 'accType' };
+  const { data } = useQuery(
+    [
+      innerQueryObject.serie,
+      innerQueryObject.sitio,
+      innerQueryObject.fromdate,
+      innerQueryObject.todate,
+    ],
+    () => getMethod('/ai/getsum', innerQueryObject)
   );
 
   const option = {
@@ -36,9 +42,16 @@ export function TiposDeAccidentesOcurridos({ filter }) {
   return <ReactECharts option={option} style={{ height: '100%' }} />;
 }
 
-export function AvisosDeRiesgoPorEstado() {
-  const { data } = useQuery('state', ({ queryKey }) =>
-    getMethod('/rw/getsum', { serie: `${queryKey[0]}`, nomserie: 'name', nomsumarizado: 'value' })
+export function AvisosDeRiesgoPorEstado({ filter }) {
+  let innerQueryObject = { ...queryObject, ...filter, serie: 'state' };
+  const { data } = useQuery(
+    [
+      innerQueryObject.serie,
+      innerQueryObject.sitio,
+      innerQueryObject.fromdate,
+      innerQueryObject.todate,
+    ],
+    () => getMethod('/rw/getsum', innerQueryObject)
   );
 
   const option = {
@@ -75,9 +88,17 @@ export function AvisosDeRiesgoPorEstado() {
   );
 }
 
-export function RiesgoPotencial() {
-  const { data } = useQuery('potRisk', ({ queryKey }) =>
-    getMethod('/rw/getsum', { serie: `${queryKey[0]}`, nomserie: 'name', nomsumarizado: 'value' })
+export function RiesgoPotencial({ filter }) {
+  let innerQueryObject = { ...queryObject, ...filter, serie: 'potRisk' };
+  console.log(innerQueryObject);
+  const { data } = useQuery(
+    [
+      innerQueryObject.serie,
+      innerQueryObject.sitio,
+      innerQueryObject.fromdate,
+      innerQueryObject.todate,
+    ],
+    () => getMethod('/rw/getsum', innerQueryObject)
   );
 
   const option = {
@@ -114,11 +135,18 @@ export function RiesgoPotencial() {
   );
 }
 
-export function RiesgoDeCalidad() {
-  const { data } = useQuery('accType', ({ queryKey }) =>
-    getMethod('/rw/getsum', { serie: `${queryKey[0]}`, nomserie: 'name', nomsumarizado: 'value' })
+export function RiesgoDeCalidad({ filter }) {
+  let innerQueryObject = { ...queryObject, ...filter, serie: 'accType' };
+  console.log(innerQueryObject);
+  const { data } = useQuery(
+    [
+      innerQueryObject.serie,
+      innerQueryObject.sitio,
+      innerQueryObject.fromdate,
+      innerQueryObject.todate,
+    ],
+    () => getMethod('/rw/getsum', innerQueryObject)
   );
-
   const option = {
     title: {
       text: `Total: ${data?.reduce((a, c) => (a += c.value), 0)}`,
@@ -153,9 +181,16 @@ export function RiesgoDeCalidad() {
   );
 }
 
-export function RiesgoMedioambiental() {
-  const { data } = useQuery('accType', ({ queryKey }) =>
-    getMethod('/ai/getsum', { serie: `${queryKey[0]}`, nomserie: 'name', nomsumarizado: 'value' })
+export function RiesgoMedioambiental({ filter }) {
+  let innerQueryObject = { ...queryObject, ...filter, serie: 'accType' };
+  const { data } = useQuery(
+    [
+      innerQueryObject.serie,
+      innerQueryObject.sitio,
+      innerQueryObject.fromdate,
+      innerQueryObject.todate,
+    ],
+    () => getMethod('/rw/getsum', innerQueryObject)
   );
 
   const option = {
@@ -182,9 +217,16 @@ export function RiesgoMedioambiental() {
   return <ReactECharts option={option} style={{ height: '100%' }} />;
 }
 
-export function RiesgoDeSalud() {
-  const { data } = useQuery('accType', ({ queryKey }) =>
-    getMethod('/ai/getsum', { serie: `${queryKey[0]}`, nomserie: 'name', nomsumarizado: 'value' })
+export function RiesgoDeSalud({ filter }) {
+  let innerQueryObject = { ...queryObject, ...filter, serie: 'accType' };
+  const { data } = useQuery(
+    [
+      innerQueryObject.serie,
+      innerQueryObject.sitio,
+      innerQueryObject.fromdate,
+      innerQueryObject.todate,
+    ],
+    () => getMethod('/rw/getsum', innerQueryObject)
   );
 
   const option = {

@@ -45,6 +45,7 @@ export function Dashboard() {
   }
   const [isAdmin, setIsAdmin] = useState(false);
   const [filter, setFilter] = useState({});
+  console.log(filter);
   return (
     <>
       <Switch onChange={() => setIsAdmin(!isAdmin)} />

@@ -3,9 +3,18 @@ import ReactECharts from 'echarts-for-react';
 import { useQuery } from 'react-query';
 import { getMethod } from 'api';
 
-export function AccidentesPorParteDelCuerpo() {
-  const { data } = useQuery('injPlace', ({ queryKey }) =>
-    getMethod('/ai/getsum', { serie: `${queryKey[0]}`, nomserie: 'name', nomsumarizado: 'value' })
+let queryObject = { nomserie: 'name', nomsumarizado: 'value' };
+
+export function AccidentesPorParteDelCuerpo({ filter }) {
+  let innerQueryObject = { ...queryObject, ...filter, serie: 'injPlace' };
+  const { data } = useQuery(
+    [
+      innerQueryObject.serie,
+      innerQueryObject.sitio,
+      innerQueryObject.fromdate,
+      innerQueryObject.todate,
+    ],
+    () => getMethod('/ai/getsum', innerQueryObject)
   );
   const option = {
     title: { text: 'Accidentes por parte del cuerpo', bottom: '5%', left: 'center' }, //pasar dinámicamente?
@@ -31,9 +40,16 @@ export function AccidentesPorParteDelCuerpo() {
 
   return <ReactECharts option={option} style={{ height: '100%' }} />;
 }
-export function RiesgosDeSeguridad() {
-  const { data } = useQuery('predRisk', ({ queryKey }) =>
-    getMethod('/rw/getsum', { serie: `${queryKey[0]}`, nomserie: 'name', nomsumarizado: 'value' })
+export function RiesgosDeSeguridad({ filter }) {
+  let innerQueryObject = { ...queryObject, ...filter, serie: 'predRisk' };
+  const { data } = useQuery(
+    [
+      innerQueryObject.serie,
+      innerQueryObject.sitio,
+      innerQueryObject.fromdate,
+      innerQueryObject.todate,
+    ],
+    () => getMethod('/rw/getsum', innerQueryObject)
   );
   const option = {
     title: { text: 'Riesgos de Seguridad', bottom: '5%', left: 'center' }, //pasar dinámicamente?
