@@ -45,7 +45,6 @@ export function Dashboard() {
   }
   const [isAdmin, setIsAdmin] = useState(false);
   const [filter, setFilter] = useState({});
-  console.log(filter);
   return (
     <>
       <Switch onChange={() => setIsAdmin(!isAdmin)} />
@@ -57,7 +56,7 @@ export function Dashboard() {
           onAddItem={onAddItem}
         />
       )}
-      <FilterDataToWidgets filter={filter} setFilter={setFilter} />
+      <FilterDataToWidgets setFilter={setFilter} />
       <DragAndDropDashboard
         className='layout'
         cols={16}
