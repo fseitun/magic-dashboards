@@ -13,6 +13,10 @@ export function AccidentesEincidentes({ filter }) {
     [
       innerQueryObject.serie,
       innerQueryObject.sitio,
+      innerQueryObject.subloc1,
+      innerQueryObject.subloc2,
+      innerQueryObject.subloc3,
+      innerQueryObject.subloc4,
       innerQueryObject.fromdate,
       innerQueryObject.todate,
     ],
@@ -59,6 +63,10 @@ export function TiposDeRiesgoOcurridos({ filter }) {
     [
       innerQueryObject.serie,
       innerQueryObject.sitio,
+      innerQueryObject.subloc1,
+      innerQueryObject.subloc2,
+      innerQueryObject.subloc3,
+      innerQueryObject.subloc4,
       innerQueryObject.fromdate,
       innerQueryObject.todate,
     ],

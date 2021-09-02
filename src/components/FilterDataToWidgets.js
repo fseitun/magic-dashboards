@@ -5,18 +5,35 @@ import { registerLocale } from 'react-datepicker';
 import es from 'date-fns/locale/es';
 import 'react-datepicker/dist/react-datepicker.css';
 import { dateObjectToYearMonthDate } from 'utils';
+import { getMethod } from 'api';
+import { useQuery } from 'react-query';
 
 registerLocale('es', es);
 
-//hardcodeados hasta que tenga endpoints
-const optionsSitio = ['General Rodriguez', 'Longchamps'];
-const optionsSubloc1 = ['Camara', 'Rodantes', 'Rosa', 'Jefatura 1', 'Almacen ', 'Sector 1'];
-const optionsSubloc2 = ['Docks', 'Autoelevador', 'Carmesi'];
-const optionsSubloc3 = ['(G3.G4 Carga Descarga) Dock N°1', 'Diesel'];
-const optionsSubloc4 = [];
+// const fico = ['Camara', 'Rodantes', 'Rosa', 'Jefatura 1', 'Almacen ', 'Sector 1'];
+// const optionsSubloc2 = ['Docks', 'Autoelevador', 'Carmesi'];
+// const optionsSubloc3 = ['(G3.G4 Carga Descarga) Dock N°1', 'Diesel'];
+// const optionsSubloc4 = [];
 
-export function FilterDataToWidgets({ filter, setFilter }) {
+export function FilterDataToWidgets({ setFilter }) {
   const [auxiliaryFilter, setAuxiliaryFilter] = useState({});
+
+  const { data: sitio = [] } = useQuery('sitios', () =>
+    getMethod('/location/list', { child: 'sitio' })
+  );
+
+  const { data: subloc1 = [] } = useQuery(['subloc1', auxiliaryFilter.sitio], () =>
+    getMethod('/location/list', { fatherValue: auxiliaryFilter.sitio, child: 'subloc1' })
+  );
+  const { data: subloc2 = [] } = useQuery(['subloc2', auxiliaryFilter.subloc1], () =>
+    getMethod('/location/list', { fatherValue: auxiliaryFilter.subloc1, child: 'subloc2' })
+  );
+  const { data: subloc3 = [] } = useQuery(['subloc3', auxiliaryFilter.subloc2], () =>
+    getMethod('/location/list', { fatherValue: auxiliaryFilter.subloc2, child: 'subloc3' })
+  );
+  const { data: subloc4 = [] } = useQuery(['subloc4', auxiliaryFilter.subloc3], () =>
+    getMethod('/location/list', { fatherValue: auxiliaryFilter.subloc3, child: 'subloc4' })
+  );
 
   const datePickerOnChange = ([start, end]) => {
     setAuxiliaryFilter(prevState => ({
@@ -33,22 +50,25 @@ export function FilterDataToWidgets({ filter, setFilter }) {
         onChange={(e, newValue) => {
           setAuxiliaryFilter(prevState => ({
             ...prevState,
-            sitio: newValue,
+            sitio: newValue?.sitio,
           }));
         }}
-        options={optionsSitio}
+        options={sitio}
+        getOptionLabel={option => option.sitio}
         sx={{ width: 120 }}
         renderInput={params => <TextField {...params} label='Sitio' />}
       />
+
       {auxiliaryFilter.sitio && (
         <Autocomplete
           onChange={(e, newValue) => {
             setAuxiliaryFilter(prevState => ({
               ...prevState,
-              subloc1: newValue,
+              subloc1: newValue.subloc1,
             }));
           }}
-          options={optionsSubloc1}
+          getOptionLabel={option => option.subloc1}
+          options={subloc1}
           sx={{ width: 120 }}
           renderInput={params => <TextField {...params} label='Sublocación 1' />}
         />
@@ -58,10 +78,11 @@ export function FilterDataToWidgets({ filter, setFilter }) {
           onChange={(e, newValue) => {
             setAuxiliaryFilter(prevState => ({
               ...prevState,
-              subloc2: newValue,
+              subloc2: newValue.subloc2,
             }));
           }}
-          options={optionsSubloc2}
+          getOptionLabel={option => option.subloc2}
+          options={subloc2}
           sx={{ width: 120 }}
           renderInput={params => <TextField {...params} label='Sublocación 2' />}
         />
@@ -71,10 +92,11 @@ export function FilterDataToWidgets({ filter, setFilter }) {
           onChange={(e, newValue) => {
             setAuxiliaryFilter(prevState => ({
               ...prevState,
-              subloc3: newValue,
+              subloc3: newValue.subloc3,
             }));
           }}
-          options={optionsSubloc3}
+          getOptionLabel={option => option.subloc3}
+          options={subloc3}
           sx={{ width: 120 }}
           renderInput={params => <TextField {...params} label='Sublocación 3' />}
         />
@@ -84,10 +106,11 @@ export function FilterDataToWidgets({ filter, setFilter }) {
           onChange={(e, newValue) => {
             setAuxiliaryFilter(prevState => ({
               ...prevState,
-              subloc4: newValue,
+              subloc4: newValue.subloc4,
             }));
           }}
-          options={optionsSubloc4}
+          getOptionLabel={option => option.subloc4}
+          options={subloc4}
           sx={{ width: 120 }}
           renderInput={params => <TextField {...params} label='Sublocación 4' />}
         />

@@ -12,6 +12,10 @@ export function TiposDeAccidentesOcurridos({ filter }) {
     [
       innerQueryObject.serie,
       innerQueryObject.sitio,
+      innerQueryObject.subloc1,
+      innerQueryObject.subloc2,
+      innerQueryObject.subloc3,
+      innerQueryObject.subloc4,
       innerQueryObject.fromdate,
       innerQueryObject.todate,
     ],
@@ -48,6 +52,10 @@ export function AvisosDeRiesgoPorEstado({ filter }) {
     [
       innerQueryObject.serie,
       innerQueryObject.sitio,
+      innerQueryObject.subloc1,
+      innerQueryObject.subloc2,
+      innerQueryObject.subloc3,
+      innerQueryObject.subloc4,
       innerQueryObject.fromdate,
       innerQueryObject.todate,
     ],
@@ -90,11 +98,14 @@ export function AvisosDeRiesgoPorEstado({ filter }) {
 
 export function RiesgoPotencial({ filter }) {
   let innerQueryObject = { ...queryObject, ...filter, serie: 'potRisk' };
-  console.log(innerQueryObject);
   const { data } = useQuery(
     [
       innerQueryObject.serie,
       innerQueryObject.sitio,
+      innerQueryObject.subloc1,
+      innerQueryObject.subloc2,
+      innerQueryObject.subloc3,
+      innerQueryObject.subloc4,
       innerQueryObject.fromdate,
       innerQueryObject.todate,
     ],
@@ -142,6 +153,10 @@ export function RiesgoDeCalidad({ filter }) {
     [
       innerQueryObject.serie,
       innerQueryObject.sitio,
+      innerQueryObject.subloc1,
+      innerQueryObject.subloc2,
+      innerQueryObject.subloc3,
+      innerQueryObject.subloc4,
       innerQueryObject.fromdate,
       innerQueryObject.todate,
     ],
@@ -187,6 +202,10 @@ export function RiesgoMedioambiental({ filter }) {
     [
       innerQueryObject.serie,
       innerQueryObject.sitio,
+      innerQueryObject.subloc1,
+      innerQueryObject.subloc2,
+      innerQueryObject.subloc3,
+      innerQueryObject.subloc4,
       innerQueryObject.fromdate,
       innerQueryObject.todate,
     ],
@@ -223,6 +242,10 @@ export function RiesgoDeSalud({ filter }) {
     [
       innerQueryObject.serie,
       innerQueryObject.sitio,
+      innerQueryObject.subloc1,
+      innerQueryObject.subloc2,
+      innerQueryObject.subloc3,
+      innerQueryObject.subloc4,
       innerQueryObject.fromdate,
       innerQueryObject.todate,
     ],

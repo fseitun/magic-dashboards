@@ -11,6 +11,10 @@ export function AccidentesPorParteDelCuerpo({ filter }) {
     [
       innerQueryObject.serie,
       innerQueryObject.sitio,
+      innerQueryObject.subloc1,
+      innerQueryObject.subloc2,
+      innerQueryObject.subloc3,
+      innerQueryObject.subloc4,
       innerQueryObject.fromdate,
       innerQueryObject.todate,
     ],
@@ -46,6 +50,10 @@ export function RiesgosDeSeguridad({ filter }) {
     [
       innerQueryObject.serie,
       innerQueryObject.sitio,
+      innerQueryObject.subloc1,
+      innerQueryObject.subloc2,
+      innerQueryObject.subloc3,
+      innerQueryObject.subloc4,
       innerQueryObject.fromdate,
       innerQueryObject.todate,
     ],
