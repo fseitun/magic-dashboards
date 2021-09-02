@@ -22,6 +22,9 @@ export function AccidentesEincidentes({ filter }) {
     ],
     () => getMethod('/ai/getsum', innerQueryObject)
   );
+  console.log(data);
+  console.log(JSON.stringify(data));
+
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -40,7 +43,7 @@ export function AccidentesEincidentes({ filter }) {
       <Card sx={{ display: 'inline-block', m: 1 }}>
         <CardContent>
           <Typography variant='h6' component='div'>
-            {data && counter(filterByParam(data, 'Reportes pendientes'))}
+            {data && counter(filterByParam(data, 'Reportes Pendientes'))}
           </Typography>
           <Typography color='text.secondary'>Reportes pendientes</Typography>
         </CardContent>
@@ -48,7 +51,7 @@ export function AccidentesEincidentes({ filter }) {
       <Card sx={{ display: 'inline-block', m: 1 }}>
         <CardContent>
           <Typography variant='h6' component='div'>
-            {data && counter(filterByParam(data, 'Acciones pendientes'))}
+            {data && counter(filterByParam(data, 'Acciones Pendientes'))}
           </Typography>
           <Typography color='text.secondary'>Acciones pendientes</Typography>
         </CardContent>
@@ -58,7 +61,7 @@ export function AccidentesEincidentes({ filter }) {
 }
 
 export function TiposDeRiesgoOcurridos({ filter }) {
-  let innerQueryObject = { ...queryObject, ...filter, serie: 'injType' };
+  let innerQueryObject = { ...queryObject, ...filter, serie: 'gravity' };
   const { data } = useQuery(
     [
       innerQueryObject.serie,
