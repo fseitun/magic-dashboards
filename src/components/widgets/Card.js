@@ -9,21 +9,9 @@ let queryObject = {};
 
 export function AccidentesEincidentes({ filter }) {
   let innerQueryObject = { ...queryObject, ...filter, serie: 'phase' };
-  const { data } = useQuery(
-    [
-      innerQueryObject.serie,
-      innerQueryObject.sitio,
-      innerQueryObject.subloc1,
-      innerQueryObject.subloc2,
-      innerQueryObject.subloc3,
-      innerQueryObject.subloc4,
-      innerQueryObject.fromdate,
-      innerQueryObject.todate,
-    ],
-    () => getMethod('/ai/getsum', innerQueryObject)
+  const { data } = useQuery(Object.values(innerQueryObject), () =>
+    getMethod('/ai/getsum', innerQueryObject)
   );
-  console.log(data);
-  console.log(JSON.stringify(data));
 
   return (
     <>
@@ -62,18 +50,8 @@ export function AccidentesEincidentes({ filter }) {
 
 export function TiposDeRiesgoOcurridos({ filter }) {
   let innerQueryObject = { ...queryObject, ...filter, serie: 'gravity' };
-  const { data } = useQuery(
-    [
-      innerQueryObject.serie,
-      innerQueryObject.sitio,
-      innerQueryObject.subloc1,
-      innerQueryObject.subloc2,
-      innerQueryObject.subloc3,
-      innerQueryObject.subloc4,
-      innerQueryObject.fromdate,
-      innerQueryObject.todate,
-    ],
-    () => getMethod('/ai/getsum', innerQueryObject)
+  const { data } = useQuery(Object.values(innerQueryObject), () =>
+    getMethod('/ai/getsum', innerQueryObject)
   );
 
   return (

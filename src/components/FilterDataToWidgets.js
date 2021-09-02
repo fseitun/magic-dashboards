@@ -10,11 +10,6 @@ import { useQuery } from 'react-query';
 
 registerLocale('es', es);
 
-// const fico = ['Camara', 'Rodantes', 'Rosa', 'Jefatura 1', 'Almacen ', 'Sector 1'];
-// const optionsSubloc2 = ['Docks', 'Autoelevador', 'Carmesi'];
-// const optionsSubloc3 = ['(G3.G4 Carga Descarga) Dock N°1', 'Diesel'];
-// const optionsSubloc4 = [];
-
 export function FilterDataToWidgets({ setFilter }) {
   const [auxiliaryFilter, setAuxiliaryFilter] = useState({});
 
