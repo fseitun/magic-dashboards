@@ -11,7 +11,44 @@ export function PiramideDeAccidentalidad({ filter }) {
   const { data } = useQuery(Object.values(innerQueryObject), () =>
     getMethod('/pyramid/getsum', innerQueryObject)
   );
-  console.log(JSON.stringify(data?.map(({ count: value, valor: name }) => ({ value, name }))));
+  let renamedData = data?.map(({ count: realValue, valor: name }) => ({ realValue, name }));
+
+  let sumOfOthers = 0;
+
+  const filteredData = renamedData?.filter(item => {
+    if (
+      item.name === 'A+' ||
+      item.name === 'A.Riesgo' ||
+      item.name === 'Auditorías' ||
+      item.name === 'Disciplina'
+    ) {
+      sumOfOthers += item.realValue;
+    }
+    return (
+      item.name !== 'A+' &&
+      item.name !== 'A.Riesgo' &&
+      item.name !== 'Auditorías' &&
+      item.name !== 'Disciplina'
+    );
+  });
+
+  filteredData?.push({ name: 'Total', realValue: sumOfOthers });
+
+  filteredData?.forEach(e => {
+    if (e.name === 'LTA') {
+      e.value = 20;
+    } else if (e.name === 'nLTA') {
+      e.value = 40;
+    } else if (e.name === 'Incidentes') {
+      e.value = 80;
+    } else if (e.name === 'Primeros Auxilios') {
+      e.value = 60;
+    } else if (e.name === 'Total') {
+      e.value = 100;
+    }
+  });
+  console.log(filteredData);
+
   const option = {
     title: {
       text: 'Pirámide de Accidentalidad',
@@ -31,11 +68,19 @@ export function PiramideDeAccidentalidad({ filter }) {
         maxSize: '100%',
         sort: 'ascending',
         gap: 2,
+        tooltip: {
+          show: true,
+          trigger: 'item',
+          formatter: params => {
+            return 'p';
+          },
+        },
         label: {
           show: true,
-          fontSize: 20,
           position: 'inside',
-          formatter: '{c}\n{b}',
+          formatter: params => {
+            return params.name + '\n' + JSON.stringify(params.data.realValue);
+          },
         },
         labelLine: {
           length: 10,
@@ -48,7 +93,7 @@ export function PiramideDeAccidentalidad({ filter }) {
           borderColor: '#fff',
           borderWidth: 5,
         },
-        data: data?.map(({ count: value, valor: name }) => ({ value, name })),
+        data: filteredData,
       },
     ],
   };
