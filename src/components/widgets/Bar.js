@@ -7,18 +7,8 @@ let queryObject = { nomserie: 'name', nomsumarizado: 'value' };
 
 export function AccidentesPorParteDelCuerpo({ filter }) {
   let innerQueryObject = { ...queryObject, ...filter, serie: 'injPlace' };
-  const { data } = useQuery(
-    [
-      innerQueryObject.serie,
-      innerQueryObject.sitio,
-      innerQueryObject.subloc1,
-      innerQueryObject.subloc2,
-      innerQueryObject.subloc3,
-      innerQueryObject.subloc4,
-      innerQueryObject.fromdate,
-      innerQueryObject.todate,
-    ],
-    () => getMethod('/ai/getsum', innerQueryObject)
+  const { data } = useQuery(Object.values(innerQueryObject), () =>
+    getMethod('/ai/getsum', innerQueryObject)
   );
   const option = {
     title: { text: 'Accidentes por parte del cuerpo', bottom: '5%', left: 'center' }, //pasar dinámicamente?
@@ -45,19 +35,14 @@ export function AccidentesPorParteDelCuerpo({ filter }) {
   return <ReactECharts option={option} style={{ height: '100%' }} />;
 }
 export function RiesgosDeSeguridad({ filter }) {
-  let innerQueryObject = { ...queryObject, ...filter, serie: 'predRisk' };
-  const { data } = useQuery(
-    [
-      innerQueryObject.serie,
-      innerQueryObject.sitio,
-      innerQueryObject.subloc1,
-      innerQueryObject.subloc2,
-      innerQueryObject.subloc3,
-      innerQueryObject.subloc4,
-      innerQueryObject.fromdate,
-      innerQueryObject.todate,
-    ],
-    () => getMethod('/rw/getsum', innerQueryObject)
+  let innerQueryObject = {
+    nomsumarizado: 'value',
+    ...filter,
+    serie: 'predRiskClas',
+    serie2: 'predRisk',
+  };
+  const { data } = useQuery(Object.values(innerQueryObject), () =>
+    getMethod('/rw/getsum2Levels', innerQueryObject)
   );
   const option = {
     title: { text: 'Riesgos de Seguridad', bottom: '5%', left: 'center' }, //pasar dinámicamente?
@@ -68,14 +53,18 @@ export function RiesgosDeSeguridad({ filter }) {
     // },
     xAxis: {
       type: 'category',
-      data: data?.filter(e => e.name !== null).map(e => e.name),
+      data: data
+      ?.map(({ valor2: name, ...rest }) => ({ name, ...rest }))
+      .filter(e => e.valor === 'Seguridad')
     },
     yAxis: {
       type: 'value',
     },
     series: [
       {
-        data: data?.filter(e => e.name !== null).map(e => e.value),
+        data: data
+        ?.map(({ valor2: name, ...rest }) => ({ name, ...rest }))
+        .filter(e => e.valor === 'Seguridad'),
         type: 'bar',
       },
     ],

@@ -8,20 +8,9 @@ let queryObject = { nomserie: 'name', nomsumarizado: 'value' };
 
 export function TiposDeAccidentesOcurridos({ filter }) {
   let innerQueryObject = { ...queryObject, ...filter, serie: 'accType' };
-  const { data } = useQuery(
-    [
-      innerQueryObject.serie,
-      innerQueryObject.sitio,
-      innerQueryObject.subloc1,
-      innerQueryObject.subloc2,
-      innerQueryObject.subloc3,
-      innerQueryObject.subloc4,
-      innerQueryObject.fromdate,
-      innerQueryObject.todate,
-    ],
-    () => getMethod('/ai/getsum', innerQueryObject)
+  const { data } = useQuery(Object.values(innerQueryObject), () =>
+    getMethod('/ai/getsum', innerQueryObject)
   );
-
   const option = {
     title: { text: 'Tipos de Accidentes Ocurridos', bottom: '5%', left: 'center' }, //pasar dinámicamente?
     tooltip: { trigger: 'item' },
@@ -48,18 +37,8 @@ export function TiposDeAccidentesOcurridos({ filter }) {
 
 export function AvisosDeRiesgoPorEstado({ filter }) {
   let innerQueryObject = { ...queryObject, ...filter, serie: 'state' };
-  const { data } = useQuery(
-    [
-      innerQueryObject.serie,
-      innerQueryObject.sitio,
-      innerQueryObject.subloc1,
-      innerQueryObject.subloc2,
-      innerQueryObject.subloc3,
-      innerQueryObject.subloc4,
-      innerQueryObject.fromdate,
-      innerQueryObject.todate,
-    ],
-    () => getMethod('/rw/getsum', innerQueryObject)
+  const { data } = useQuery(Object.values(innerQueryObject), () =>
+    getMethod('/rw/getsum', innerQueryObject)
   );
 
   const option = {
@@ -98,18 +77,8 @@ export function AvisosDeRiesgoPorEstado({ filter }) {
 
 export function RiesgoPotencial({ filter }) {
   let innerQueryObject = { ...queryObject, ...filter, serie: 'potRisk' };
-  const { data } = useQuery(
-    [
-      innerQueryObject.serie,
-      innerQueryObject.sitio,
-      innerQueryObject.subloc1,
-      innerQueryObject.subloc2,
-      innerQueryObject.subloc3,
-      innerQueryObject.subloc4,
-      innerQueryObject.fromdate,
-      innerQueryObject.todate,
-    ],
-    () => getMethod('/rw/getsum', innerQueryObject)
+  const { data } = useQuery(Object.values(innerQueryObject), () =>
+    getMethod('/rw/getsum', innerQueryObject)
   );
 
   const option = {
@@ -147,24 +116,21 @@ export function RiesgoPotencial({ filter }) {
 }
 
 export function RiesgoDeCalidad({ filter }) {
-  let innerQueryObject = { ...queryObject, ...filter, serie: 'accType' };
-  console.log(innerQueryObject);
-  const { data } = useQuery(
-    [
-      innerQueryObject.serie,
-      innerQueryObject.sitio,
-      innerQueryObject.subloc1,
-      innerQueryObject.subloc2,
-      innerQueryObject.subloc3,
-      innerQueryObject.subloc4,
-      innerQueryObject.fromdate,
-      innerQueryObject.todate,
-    ],
-    () => getMethod('/rw/getsum', innerQueryObject)
+  let innerQueryObject = {
+    nomsumarizado: 'value',
+    ...filter,
+    serie: 'predRiskClas',
+    serie2: 'predRisk',
+  };
+  const { data } = useQuery(Object.values(innerQueryObject), () =>
+    getMethod('/rw/getsum2Levels', innerQueryObject)
   );
   const option = {
     title: {
-      text: `Total: ${data?.reduce((a, c) => (a += c.value), 0)}`,
+      text: `Total: ${data
+        ?.map(({ valor2: name, ...rest }) => ({ name, ...rest }))
+        .filter(e => e.valor === 'Salud')
+        .reduce((a, c) => (a += c.value), 0)}`,
       top: '41%',
       left: '29%',
       textAlign: 'center',
@@ -183,7 +149,9 @@ export function RiesgoDeCalidad({ filter }) {
         label: { show: false },
         left: 0,
         center: ['30%', '45%'],
-        data,
+        data: data
+          ?.map(({ valor2: name, ...rest }) => ({ name, ...rest }))
+          .filter(e => e.valor === 'Salud'),
       },
     ],
   };
@@ -197,23 +165,25 @@ export function RiesgoDeCalidad({ filter }) {
 }
 
 export function RiesgoMedioambiental({ filter }) {
-  let innerQueryObject = { ...queryObject, ...filter, serie: 'accType' };
-  const { data } = useQuery(
-    [
-      innerQueryObject.serie,
-      innerQueryObject.sitio,
-      innerQueryObject.subloc1,
-      innerQueryObject.subloc2,
-      innerQueryObject.subloc3,
-      innerQueryObject.subloc4,
-      innerQueryObject.fromdate,
-      innerQueryObject.todate,
-    ],
-    () => getMethod('/rw/getsum', innerQueryObject)
+  let innerQueryObject = {
+    nomsumarizado: 'value',
+    ...filter,
+    serie: 'predRiskClas',
+    serie2: 'predRisk',
+  };
+  const { data } = useQuery(Object.values(innerQueryObject), () =>
+    getMethod('/rw/getsum2Levels', innerQueryObject)
   );
-
   const option = {
-    title: { text: 'Riesgo Medioambiental', bottom: '5%', left: 'center' }, //pasar dinámicamente?
+    title: {
+      text: `Total: ${data
+        ?.map(({ valor2: name, ...rest }) => ({ name, ...rest }))
+        .filter(e => e.valor === 'Ambiental')
+        .reduce((a, c) => (a += c.value), 0)}`,
+      top: '41%',
+      left: '29%',
+      textAlign: 'center',
+    },
     tooltip: { trigger: 'item' },
     legend: {
       right: '0',
@@ -224,36 +194,45 @@ export function RiesgoMedioambiental({ filter }) {
     series: [
       {
         type: 'pie',
-        radius: ['', '75%'],
+        radius: ['35%', '75%'],
         label: { show: false },
         left: 0,
         center: ['30%', '45%'],
-        data,
+        data: data
+          ?.map(({ valor2: name, ...rest }) => ({ name, ...rest }))
+          .filter(e => e.valor === 'Ambiental'),
       },
     ],
   };
 
-  return <ReactECharts option={option} style={{ height: '100%' }} />;
+  return (
+    <Box sx={{ height: 1, display: 'flex', flexFlow: 'column' }}>
+      <ReactECharts option={option} style={{ height: '90%' }} />
+      <Typography color='text.secondary'> Riesgo Medioambiental</Typography>
+    </Box>
+  );
 }
 
 export function RiesgoDeSalud({ filter }) {
-  let innerQueryObject = { ...queryObject, ...filter, serie: 'accType' };
-  const { data } = useQuery(
-    [
-      innerQueryObject.serie,
-      innerQueryObject.sitio,
-      innerQueryObject.subloc1,
-      innerQueryObject.subloc2,
-      innerQueryObject.subloc3,
-      innerQueryObject.subloc4,
-      innerQueryObject.fromdate,
-      innerQueryObject.todate,
-    ],
-    () => getMethod('/rw/getsum', innerQueryObject)
+  let innerQueryObject = {
+    nomsumarizado: 'value',
+    ...filter,
+    serie: 'predRiskClas',
+    serie2: 'predRisk',
+  };
+  const { data } = useQuery(Object.values(innerQueryObject), () =>
+    getMethod('/rw/getsum2Levels', innerQueryObject)
   );
-
   const option = {
-    title: { text: 'Riesgo de Salud', bottom: '5%', left: 'center' }, //pasar dinámicamente?
+    title: {
+      text: `Total: ${data
+        ?.map(({ valor2: name, ...rest }) => ({ name, ...rest }))
+        .filter(e => e.valor === 'Salud')
+        .reduce((a, c) => (a += c.value), 0)}`,
+      top: '41%',
+      left: '29%',
+      textAlign: 'center',
+    },
     tooltip: { trigger: 'item' },
     legend: {
       right: '0',
@@ -264,14 +243,22 @@ export function RiesgoDeSalud({ filter }) {
     series: [
       {
         type: 'pie',
-        radius: ['', '75%'],
+        radius: ['35%', '75%'],
         label: { show: false },
         left: 0,
         center: ['30%', '45%'],
-        data,
+        data: data
+          ?.map(({ valor2: name, ...rest }) => ({ name, ...rest }))
+          .filter(e => e.valor === 'Salud'),
       },
     ],
   };
 
-  return <ReactECharts option={option} style={{ height: '100%' }} />;
+  return (
+    <Box sx={{ height: 1, display: 'flex', flexFlow: 'column' }}>
+      <ReactECharts option={option} style={{ height: '90%' }} />
+      <Typography color='text.secondary'> Riesgo de Salud</Typography>
+    </Box>
+  );
 }
+
