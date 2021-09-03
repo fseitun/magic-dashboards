@@ -87,7 +87,7 @@ export function Dashboard() {
   const [filter, setFilter] = useState({});
   return (
     <>
-      <Switch onChange={() => setIsAdmin(!isAdmin)} />
+      {/* <Switch onChange={() => setIsAdmin(!isAdmin)} />
       {isAdmin && (
         <WidgetSelector
           widgetTypes={widgetTypes}
@@ -95,7 +95,7 @@ export function Dashboard() {
           setchartType={setchartType}
           onAddItem={onAddItem}
         />
-      )}
+      )} */}
       <FilterDataToWidgets setFilter={setFilter} />
       <DragAndDropDashboard
         className='layout'
