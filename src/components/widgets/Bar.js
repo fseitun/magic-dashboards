@@ -5,35 +5,6 @@ import { getMethod } from 'api';
 
 let queryObject = { nomserie: 'name', nomsumarizado: 'value' };
 
-export function AccidentesPorParteDelCuerpo({ filter }) {
-  let innerQueryObject = { ...queryObject, ...filter, serie: 'injPlace' };
-  const { data } = useQuery(Object.values(innerQueryObject), () =>
-    getMethod('/ai/getsum', innerQueryObject)
-  );
-  const option = {
-    title: { text: 'Accidentes por parte del cuerpo', bottom: '5%', left: 'center' }, //pasar dinámicamente?
-    tooltip: { trigger: 'item' },
-    // legend: {
-    //   show: true,
-    //   //data: async () => await data.filter(e => e.name !== null).map(e => e.name),
-    // },
-    xAxis: {
-      type: 'category',
-      data: data?.filter(e => e.name !== null).map(e => e.name),
-    },
-    yAxis: {
-      type: 'value',
-    },
-    series: [
-      {
-        data: data?.filter(e => e.name !== null).map(e => e.value),
-        type: 'bar',
-      },
-    ],
-  };
-
-  return <ReactECharts option={option} style={{ height: '100%' }} />;
-}
 export function RiesgosDeSeguridad({ filter }) {
   let innerQueryObject = {
     nomsumarizado: 'value',
@@ -54,8 +25,8 @@ export function RiesgosDeSeguridad({ filter }) {
     xAxis: {
       type: 'category',
       data: data
-      ?.map(({ valor2: name, ...rest }) => ({ name, ...rest }))
-      .filter(e => e.valor === 'Seguridad')
+        ?.map(({ valor2: name, ...rest }) => ({ name, ...rest }))
+        .filter(e => e.valor === 'Seguridad'),
     },
     yAxis: {
       type: 'value',
@@ -63,8 +34,8 @@ export function RiesgosDeSeguridad({ filter }) {
     series: [
       {
         data: data
-        ?.map(({ valor2: name, ...rest }) => ({ name, ...rest }))
-        .filter(e => e.valor === 'Seguridad'),
+          ?.map(({ valor2: name, ...rest }) => ({ name, ...rest }))
+          .filter(e => e.valor === 'Seguridad'),
         type: 'bar',
       },
     ],
