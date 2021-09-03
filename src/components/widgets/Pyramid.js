@@ -11,7 +11,30 @@ export function PiramideDeAccidentalidad({ filter }) {
   const { data } = useQuery(Object.values(innerQueryObject), () =>
     getMethod('/pyramid/getsum', innerQueryObject)
   );
-  console.log(JSON.stringify(data?.map(({ count: value, valor: name }) => ({ value, name }))));
+  let renamedData = data?.map(({ count: value, valor: name }) => ({ value, name }));
+
+  let sumOfOthers = 0;
+
+  const filteredData = renamedData?.filter(item => {
+    if (
+      item.name === 'A+' ||
+      item.name === 'A.Riesgo' ||
+      item.name === 'Auditorías' ||
+      item.name === 'Disciplina'
+    ) {
+      sumOfOthers += item.value;
+    }
+    return (
+      item.name !== 'A+' &&
+      item.name !== 'A.Riesgo' &&
+      item.name !== 'Auditorías' &&
+      item.name !== 'Disciplina'
+    );
+  });
+
+  filteredData?.push({ name:'Total', value: sumOfOthers });
+  console.log(filteredData);
+
   const option = {
     title: {
       text: 'Pirámide de Accidentalidad',
@@ -48,7 +71,7 @@ export function PiramideDeAccidentalidad({ filter }) {
           borderColor: '#fff',
           borderWidth: 5,
         },
-        data: data?.map(({ count: value, valor: name }) => ({ value, name })),
+        data: filteredData,
       },
     ],
   };
