@@ -3,25 +3,21 @@ import ReactECharts from 'echarts-for-react';
 import { useQuery } from 'react-query';
 import { getMethod } from 'api';
 
-let queryObject = { nomserie: 'name', nomsumarizado: 'value' };
-
 export function PiramideDeAccidentalidad({ filter }) {
+  let innerQueryObject = {
+    ...filter,
+    serie: 'classification',
+  };
+  const { data } = useQuery(Object.values(innerQueryObject), () =>
+    getMethod('/pyramid/getsum', innerQueryObject)
+  );
+  console.log(JSON.stringify(data?.map(({ count: value, valor: name }) => ({ value, name }))));
   const option = {
     title: {
       text: 'Pirámide de Accidentalidad',
     },
-    tooltip: {
-      trigger: 'item',
-      formatter: '{a} <br/>{b} : {c}%',
-    },
-    
-    legend: {
-      data: ['A', 'B', 'C', 'D', 'E'],
-    },
-
     series: [
       {
-        name: '漏斗图',
         type: 'funnel',
         left: '10%',
         top: 60,
@@ -33,11 +29,13 @@ export function PiramideDeAccidentalidad({ filter }) {
         max: 100,
         minSize: '0%',
         maxSize: '100%',
-        sort: 'descending',
+        sort: 'ascending',
         gap: 2,
         label: {
           show: true,
+          fontSize: 20,
           position: 'inside',
+          formatter: '{c}\n{b}',
         },
         labelLine: {
           length: 10,
@@ -48,20 +46,9 @@ export function PiramideDeAccidentalidad({ filter }) {
         },
         itemStyle: {
           borderColor: '#fff',
-          borderWidth: 1,
+          borderWidth: 5,
         },
-        emphasis: {
-          label: {
-            fontSize: 20,
-          },
-        },
-        data: [
-          { value: 60, name: 'C' },
-          { value: 40, name: 'D' },
-          { value: 20, name: 'E' },
-          { value: 80, name: 'B' },
-          { value: 100, name: 'A' },
-        ],
+        data: data?.map(({ count: value, valor: name }) => ({ value, name })),
       },
     ],
   };
