@@ -47,7 +47,6 @@ export function PiramideDeAccidentalidad({ filter }) {
       e.value = 100;
     }
   });
-  console.log(filteredData);
 
   const option = {
     title: {
@@ -71,16 +70,12 @@ export function PiramideDeAccidentalidad({ filter }) {
         tooltip: {
           show: true,
           trigger: 'item',
-          formatter: params => {
-            return 'p';
-          },
+          formatter: params => 'p',
         },
         label: {
           show: true,
           position: 'inside',
-          formatter: params => {
-            return params.name + '\n' + JSON.stringify(params.data.realValue);
-          },
+          formatter: params => params.name + '\n' + JSON.stringify(params.data.realValue),
         },
         labelLine: {
           length: 10,
