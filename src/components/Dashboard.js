@@ -9,19 +9,18 @@ import { FilterDataToWidgets } from 'components/FilterDataToWidgets';
 export function Dashboard() {
   const savedLayout = JSON.parse(localStorage.getItem('layout')) || {
     layout: [
-      { w: 4, h: 4, x: 0, y: 34, i: '12', moved: false, static: false },
-      { w: 4, h: 4, x: 4, y: 34, i: '13', moved: false, static: false },
-      { w: 4, h: 4, x: 8, y: 34, i: '14', moved: false, static: false },
-      { w: 8, h: 3, x: 0, y: 0, i: '15', moved: false, static: false },
-      { w: 8, h: 6, x: 0, y: 3, i: '16', moved: false, static: false },
-      { w: 4, h: 8, x: 8, y: 0, i: '17', moved: false, static: false },
-      { w: 12, h: 5, x: 0, y: 9, i: '18', moved: false, static: false },
-      { w: 12, h: 9, x: 0, y: 14, i: '19', moved: false, static: false },
-      { w: 7, h: 4, x: 0, y: 30, i: '20', moved: false, static: false },
-      { w: 5, h: 4, x: 7, y: 30, i: '21', moved: false, static: false },
-      { w: 12, h: 7, x: 0, y: 23, i: '22', moved: false, static: false },
+      { w: 5, h: 3, x: 1, y: 21, i: '23', moved: false, static: false },
+      { w: 8, h: 6, x: 0, y: 3, i: '25', moved: false, static: false },
+      { w: 4, h: 3, x: 8, y: 21, i: '26', moved: false, static: false },
+      { w: 4, h: 3, x: 0, y: 24, i: '27', moved: false, static: false },
+      { w: 3, h: 3, x: 5, y: 24, i: '28', moved: false, static: false },
+      { w: 3, h: 3, x: 9, y: 24, i: '29', moved: false, static: false },
+      { w: 8, h: 3, x: 0, y: 0, i: '30', moved: false, static: false },
+      { w: 4, h: 7, x: 8, y: 0, i: '31', moved: false, static: false },
+      { w: 12, h: 5, x: 0, y: 9, i: '32', moved: false, static: false },
+      { w: 8, h: 7, x: 4, y: 14, i: '33', moved: false, static: false },
     ],
-    newCounter: 23,
+    newCounter: 34,
     type: [
       'TiposDeAccidentesOcurridos',
       'TiposDeAccidentesOcurridos',
@@ -46,6 +45,17 @@ export function Dashboard() {
       'AvisosDeRiesgoPorEstado',
       'RiesgoPotencial',
       'AccidentesPorParteDelCuerpo',
+      'AvisosDeRiesgoPorEstado',
+      'AvisosDeRiesgoPorEstado',
+      'TiposDeAccidentesOcurridos',
+      'RiesgoPotencial',
+      'RiesgoDeCalidad',
+      'RiesgoMedioambiental',
+      'RiesgoDeSalud',
+      'AccidentesEincidentes',
+      'TiposDeRiesgoOcurridos',
+      'RiesgosDeSeguridad',
+      'PiramideDeAccidentalidad',
     ],
   };
   let result;
@@ -87,7 +97,7 @@ export function Dashboard() {
   const [filter, setFilter] = useState({});
   return (
     <>
-      {/* <Switch onChange={() => setIsAdmin(!isAdmin)} />
+      <Switch onChange={() => setIsAdmin(!isAdmin)} />
       {isAdmin && (
         <WidgetSelector
           widgetTypes={widgetTypes}
@@ -95,7 +105,7 @@ export function Dashboard() {
           setchartType={setchartType}
           onAddItem={onAddItem}
         />
-      )} */}
+      )}
       <FilterDataToWidgets setFilter={setFilter} />
       <DragAndDropDashboard
         className='layout'
